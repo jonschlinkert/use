@@ -2,10 +2,6 @@
 
 > Easily add plugin support to your node.js application.
 
-A different approach to plugin handling....
-
-_(TODO)_
-
 ## Install
 
 Install with [npm](https://www.npmjs.com/)
@@ -22,9 +18,9 @@ var use = require('use');
 
 ## API
 
-### [.use](index.js#L47)
+### [.use](index.js#L49)
 
-Define a plugin function to be called immediately upon init. The only parameter exposed to the plugin is the application instance.
+Define a plugin function to be passed to use. The only parameter exposed to the plugin is the application instance.
 
 Also, if a plugin returns a function, the function will be pushed
 onto the `fns` array, allowing the plugin to be called at a
@@ -38,21 +34,25 @@ later point, elsewhere in the application.
 **Example**
 
 ```js
+var use = require('use');
+
 // define a plugin
 function foo(app) {
   // do stuff
 }
 
+var app = function(){};
+use(app);
+
 // register plugins
-var app = new Base()
-  .use(foo)
-  .use(bar)
-  .use(baz)
+app.use(foo);
+app.use(bar);
+app.use(baz);
 ```
 
-### [.run](index.js#L62)
+### [.run](index.js#L65)
 
-Run all plugins
+Run all plugins on `fns`. Any plugin that returns a function when called by `use` is pushed onto the `fns` array.
 
 **Params**
 
@@ -70,7 +70,6 @@ app.run(config);
 
 * [base-methods](https://www.npmjs.com/package/base-methods): Starter for creating a node.js application with a handful of common methods, like `set`, `get`,… [more](https://www.npmjs.com/package/base-methods) | [homepage](https://github.com/jonschlinkert/base-methods)
 * [ware](https://www.npmjs.com/package/ware): Easily create your own middleware layer. | [homepage](https://github.com/segmentio/ware)
-* [wrapped](https://www.npmjs.com/package/wrapped): consistent interface for  | [homepage](https://github.com/matthewmueller/wrapped#readme)
 
 ## Running tests
 
