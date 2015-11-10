@@ -7,83 +7,67 @@
 
 'use strict';
 
-var wrapped = require('wrapped');
 var define = require('define-property');
 var isObject = require('isobject');
 
-module.exports = function base() {
-  return function(app) {
-    if (!app.fns) {
-      define(app, 'fns', []);
-    }
-
-    /**
-     * Define a plugin function to be called immediately upon init.
-     * The only parameter exposed to the plugin is the application
-     * instance.
-     *
-     * Also, if a plugin returns a function, the function will be pushed
-     * onto the `fns` array, allowing the plugin to be called at a
-     * later point, elsewhere in the application.
-     *
-     * ```js
-     * var use = require('use');
-     *
-     * // define a plugin
-     * function foo(app) {
-     *   // do stuff
-     * }
-     *
-     * var app = function(){};
-     * use(app);
-     *
-     * // register plugins
-     * app.use(foo);
-     * app.use(bar);
-     * app.use(baz);
-     * ```
-     * @name .use
-     * @param {Function} `fn` plugin function to call
-     * @return {Object} Returns the item instance for chaining.
-     * @api public
-     */
-
-    define(app, 'use', use);
-
-    /**
-     * Run all plugins
-     *
-     * ```js
-     * var config = {};
-     * app.run(config);
-     * ```
-     * @name .run
-     * @param {Object} `value` Object to be modified by plugins.
-     * @return {Object} Returns the item instance for chaining.
-     * @api public
-     */
-
-    define(app, 'run', function (val) {
-      decorate(val);
-      var len = fns.length, i = -1;
-      while (++i < len) {
-        val.use(fns[i]);
-      }
-      return this;
-    });
-  };
+module.exports = function base(app) {
+  if (!app.fns) {
+    define(app, 'fns', []);
+  }
 
   /**
-   * Ensure the `.use` method exists on `val`
+   * Define a plugin function to be passed to use. The only
+   * parameter exposed to the plugin is the application
+   * instance.
+   *
+   * Also, if a plugin returns a function, the function will be pushed
+   * onto the `fns` array, allowing the plugin to be called at a
+   * later point, elsewhere in the application.
+   *
+   * ```js
+   * var use = require('use');
+   *
+   * // define a plugin
+   * function foo(app) {
+   *   // do stuff
+   * }
+   *
+   * var app = function(){};
+   * use(app);
+   *
+   * // register plugins
+   * app.use(foo);
+   * app.use(bar);
+   * app.use(baz);
+   * ```
+   * @name .use
+   * @param {Function} `fn` plugin function to call
+   * @return {Object} Returns the item instance for chaining.
+   * @api public
    */
 
-  function decorate(val) {
-    if (isObject(val) && !val.use) {
-      define(val, 'fns', val.fns || []);
-      define(val, 'use', use);
-      val.use(base());
-    }
-  }
+  define(app, 'use', use);
+
+  /**
+   * Run all plugins on `fns`. Any plugin that returns a function
+   * when called by `use` is pushed onto the `fns` array.
+   *
+   * ```js
+   * var config = {};
+   * app.run(config);
+   * ```
+   * @name .run
+   * @param {Object} `value` Object to be modified by plugins.
+   * @return {Object} Returns the item instance for chaining.
+   * @api public
+   */
+
+  define(app, 'run', function (val) {
+    decorate(val);
+    var len = this.fns.length, i = -1;
+    while (++i < len) val.use(this.fns[i]);
+    return this;
+  });
 
   /**
    * Call plugin `fn`. If a function is returned push it into the
@@ -97,4 +81,16 @@ module.exports = function base() {
     }
     return this;
   }
+
+  /**
+   * Ensure the `.use` method exists on `val`
+   */
+
+  function decorate(val) {
+    if (isObject(val) && !val.use && !val.run) {
+      base(val);
+    }
+  }
+
+  return app;
 };
