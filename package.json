@@ -1,0 +1,28 @@
+{
+  "name": "use",
+  "description": "Add plugin support to your node.js app!",
+  "version": "0.1.0",
+  "homepage": "https://github.com/jonschlinkert/use",
+  "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+  "repository": "jonschlinkert/use",
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/use/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "index.js"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*"
+  },
+  "keywords": []
+}
