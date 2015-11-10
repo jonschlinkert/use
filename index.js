@@ -27,16 +27,20 @@ module.exports = function base() {
      * later point, elsewhere in the application.
      *
      * ```js
+     * var use = require('use');
+     *
      * // define a plugin
      * function foo(app) {
      *   // do stuff
      * }
      *
+     * var app = function(){};
+     * use(app);
+     *
      * // register plugins
-     * var app = new Base()
-     *   .use(foo)
-     *   .use(bar)
-     *   .use(baz)
+     * app.use(foo);
+     * app.use(bar);
+     * app.use(baz);
      * ```
      * @name .use
      * @param {Function} `fn` plugin function to call
@@ -61,9 +65,10 @@ module.exports = function base() {
 
     define(app, 'run', function (val) {
       decorate(val);
-      this.fns.forEach(function (fn) {
-        val.use(fn);
-      });
+      var len = fns.length, i = -1;
+      while (++i < len) {
+        val.use(fns[i]);
+      }
       return this;
     });
   };
