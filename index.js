@@ -17,12 +17,12 @@ module.exports = function base(app) {
 
   /**
    * Define a plugin function to be passed to use. The only
-   * parameter exposed to the plugin is the application
-   * instance.
+   * parameter exposed to the plugin is `app`, the object or function.
+   * passed to `use(app)`. `app` is also exposed as `this` in plugins.
    *
-   * Also, if a plugin returns a function, the function will be pushed
-   * onto the `fns` array, allowing the plugin to be called at a
-   * later point, elsewhere in the application.
+   * Additionally, **if a plugin returns a function, the function will
+   * be pushed onto the `fns` array**, allowing the plugin to be
+   * called at a later point by the `run` method.
    *
    * ```js
    * var use = require('use');
@@ -42,7 +42,6 @@ module.exports = function base(app) {
    * ```
    * @name .use
    * @param {Function} `fn` plugin function to call
-   * @return {Object} Returns the item instance for chaining.
    * @api public
    */
 
@@ -58,7 +57,7 @@ module.exports = function base(app) {
    * ```
    * @name .run
    * @param {Object} `value` Object to be modified by plugins.
-   * @return {Object} Returns the item instance for chaining.
+   * @return {Object} Returns the object passed to `run`
    * @api public
    */
 
@@ -66,7 +65,7 @@ module.exports = function base(app) {
     decorate(val);
     var len = this.fns.length, i = -1;
     while (++i < len) val.use(this.fns[i]);
-    return this;
+    return val;
   });
 
   /**
