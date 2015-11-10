@@ -2,6 +2,8 @@
 
 > Easily add plugin support to your node.js application.
 
+A different take on plugin handling! This is not a middleware system, if you need something that handles async middleware, [ware](https://github.com/segmentio/ware) is great for that.
+
 ## Install
 
 Install with [npm](https://www.npmjs.com/)
@@ -16,20 +18,21 @@ $ npm i use --save
 var use = require('use');
 ```
 
+See the [examples folder](./examples) for usage examples.
+
 ## API
 
-### [.use](index.js#L49)
+### [.use](index.js#L48)
 
-Define a plugin function to be passed to use. The only parameter exposed to the plugin is the application instance.
+Define a plugin function to be passed to use. The only parameter exposed to the plugin is `app`, the object or function. passed to `use(app)`. `app` is also exposed as `this` in plugins.
 
-Also, if a plugin returns a function, the function will be pushed
-onto the `fns` array, allowing the plugin to be called at a
-later point, elsewhere in the application.
+Additionally, **if a plugin returns a function, the function will
+be pushed onto the `fns` array**, allowing the plugin to be
+called at a later point by the `run` method.
 
 **Params**
 
 * `fn` **{Function}**: plugin function to call
-* `returns` **{Object}**: Returns the item instance for chaining.
 
 **Example**
 
@@ -50,14 +53,14 @@ app.use(bar);
 app.use(baz);
 ```
 
-### [.run](index.js#L65)
+### [.run](index.js#L64)
 
 Run all plugins on `fns`. Any plugin that returns a function when called by `use` is pushed onto the `fns` array.
 
 **Params**
 
 * `value` **{Object}**: Object to be modified by plugins.
-* `returns` **{Object}**: Returns the item instance for chaining.
+* `returns` **{Object}**: Returns the object passed to `run`
 
 **Example**
 
