@@ -1,4 +1,4 @@
-# use [![NPM version](https://badge.fury.io/js/use.svg)](http://badge.fury.io/js/use)
+# use [![NPM version](https://badge.fury.io/js/use.svg)](http://badge.fury.io/js/use)  [![Build Status](https://travis-ci.org/jonschlinkert/use.svg)](https://travis-ci.org/jonschlinkert/use)
 
 > Easily add plugin support to your node.js application.
 
