@@ -86,7 +86,7 @@ module.exports = function base(app) {
    */
 
   function decorate(val) {
-    if (isObject(val) && !val.use && !val.run) {
+    if (isObject(val) && (!val.use || !val.run)) {
       base(val);
     }
   }
