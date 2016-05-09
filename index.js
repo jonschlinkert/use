@@ -7,12 +7,11 @@
 
 'use strict';
 
-var define = require('define-property');
-var isObject = require('isobject');
+var utils = require('./utils')
 
 module.exports = function base(app) {
   if (!app.fns) {
-    define(app, 'fns', []);
+    utils.define(app, 'fns', []);
   }
 
   /**
@@ -45,7 +44,7 @@ module.exports = function base(app) {
    * @api public
    */
 
-  define(app, 'use', use);
+  utils.define(app, 'use', use);
 
   /**
    * Run all plugins on `fns`. Any plugin that returns a function
@@ -61,7 +60,7 @@ module.exports = function base(app) {
    * @api public
    */
 
-  define(app, 'run', function (val) {
+  utils.define(app, 'run', function (val) {
     decorate(val);
     var len = this.fns.length, i = -1;
     while (++i < len) val.use(this.fns[i]);
@@ -86,7 +85,7 @@ module.exports = function base(app) {
    */
 
   function decorate(val) {
-    if (isObject(val) && (!val.use || !val.run)) {
+    if (utils.isObject(val) && (!val.use || !val.run)) {
       base(val);
     }
   }

@@ -10,7 +10,8 @@
   },
   "license": "MIT",
   "files": [
-    "index.js"
+    "index.js",
+    "utils.js"
   ],
   "main": "index.js",
   "engines": {
@@ -21,7 +22,9 @@
   },
   "dependencies": {
     "define-property": "^0.2.5",
-    "isobject": "^2.1.0"
+    "isarray": "^1.0.0",
+    "isobject": "^2.1.0",
+    "lazy-cache": "^2.0.1"
   },
   "devDependencies": {
     "base-plugins": "^0.4.1",
