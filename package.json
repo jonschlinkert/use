@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "base-plugins": "^0.4.1",
+    "extend-shallow": "^2.0.1",
     "gulp": "^3.9.0",
     "gulp-eslint": "^1.1.0",
     "gulp-istanbul": "^0.10.2",
