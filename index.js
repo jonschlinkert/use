@@ -14,12 +14,12 @@ module.exports = function base(app, opts) {
     throw new TypeError('use: expect `app` be an object or function');
   }
 
-  opts = utils.isObject(opts) ? opts : {}
-  opts.prop = typeof opts.prop === 'string' ? opts.prop : 'fns'
-  opts.prop = opts.prop.length > 0 ? opts.prop : 'fns'
+  opts = utils.isObject(opts) ? opts : {};
+  opts.prop = typeof opts.prop === 'string' ? opts.prop : 'fns';
+  opts.prop = opts.prop.length > 0 ? opts.prop : 'fns';
 
   if (!utils.isArray(app[opts.prop])) {
-    utils.define(app, opts.prop, [])
+    utils.define(app, opts.prop, []);
   }
 
   /**
@@ -69,8 +69,8 @@ module.exports = function base(app, opts) {
    */
 
   utils.define(app, 'run', function (val) {
-    var self = this || app
-    var fns = self[opts.prop]
+    var self = this || app;
+    var fns = self[opts.prop];
     decorate(val);
     var len = fns.length, i = -1;
     while (++i < len) val.use(fns[i]);
@@ -83,10 +83,10 @@ module.exports = function base(app, opts) {
    */
 
   function use(fn) {
-    var self = this || app
+    var self = this || app;
     var plugin = fn.call(self, self);
     if (typeof plugin === 'function') {
-      var fns = self[opts.prop]
+      var fns = self[opts.prop];
       fns.push(plugin);
     }
     return self;
