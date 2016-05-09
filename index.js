@@ -82,8 +82,16 @@ module.exports = function base(app, opts) {
    * `fns` array to be called by the `run` method.
    */
 
-  function use(fn) {
+  function use(fn, options) {
+    if (typeof fn !== 'function') {
+      throw new TypeError('.use expect `fn` be function');
+    }
     var self = this || app;
+
+    if (typeof opts.fn === 'function') {
+      opts.fn.call(self, self, options);
+    }
+
     var plugin = fn.call(self, self);
     if (typeof plugin === 'function') {
       var fns = self[opts.prop];
