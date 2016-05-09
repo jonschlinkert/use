@@ -10,6 +10,22 @@ describe('use', function() {
     assert.equal(typeof use, 'function');
   });
 
+  it('should throw TypeError `app` not a function or object', function() {
+    function fixture () {
+      use(123);
+    }
+    assert.throws(fixture, TypeError);
+    assert.throws(fixture, /expect `app` be an object or function/);
+  });
+
+  it('should throw TypeError if not a function passed to `.use` method', function() {
+    function fixture () {
+      use({}).use(123);
+    }
+    assert.throws(fixture, TypeError);
+    assert.throws(fixture, /expect `fn` be function/);
+  });
+
   it('should decorate "use" onto the given object', function() {
     var app = {};
     use(app);
@@ -35,6 +51,15 @@ describe('use', function() {
     assert(app.fns.length === 1);
     use(app);
     assert(app.fns.length === 1);
+  });
+
+  it('should allow passing custom property to be used for plugins stack', function() {
+    var app = {};
+    use(app, { prop: 'plugins' });
+    assert.strictEqual(Array.isArray(app.fns), false);
+    assert.strictEqual(Array.isArray(app.plugins), true);
+    assert(app.plugins.length === 0);
+
   });
 
   it('should immediately invoke a plugin function', function() {
