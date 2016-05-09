@@ -9,9 +9,17 @@
 
 var utils = require('./utils')
 
-module.exports = function base(app) {
-  if (!app.fns) {
-    utils.define(app, 'fns', []);
+module.exports = function base(app, opts) {
+  if (!utils.isObject(app) && typeof app !== 'function') {
+    throw new TypeError('use: expect `app` be an object or function');
+  }
+
+  opts = utils.isObject(opts) ? opts : {}
+  opts.prop = typeof opts.prop === 'string' ? opts.prop : 'fns'
+  opts.prop = opts.prop.length > 0 ? opts.prop : 'fns'
+
+  if (!utils.isArray(app[opts.prop])) {
+    utils.define(app, opts.prop, [])
   }
 
   /**
@@ -61,9 +69,11 @@ module.exports = function base(app) {
    */
 
   utils.define(app, 'run', function (val) {
+    var self = this || app
+    var fns = self[opts.prop]
     decorate(val);
-    var len = this.fns.length, i = -1;
-    while (++i < len) val.use(this.fns[i]);
+    var len = fns.length, i = -1;
+    while (++i < len) val.use(fns[i]);
     return val;
   });
 
@@ -73,11 +83,13 @@ module.exports = function base(app) {
    */
 
   function use(fn) {
-    var plugin = fn.call(this, this);
+    var self = this || app
+    var plugin = fn.call(self, self);
     if (typeof plugin === 'function') {
-      this.fns.push(plugin);
+      var fns = self[opts.prop]
+      fns.push(plugin);
     }
-    return this;
+    return self;
   }
 
   /**
