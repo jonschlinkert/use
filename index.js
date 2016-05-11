@@ -7,12 +7,19 @@
 
 'use strict';
 
-var define = require('define-property');
-var isObject = require('isobject');
+var utils = require('./utils')
 
-module.exports = function base(app) {
-  if (!app.fns) {
-    define(app, 'fns', []);
+module.exports = function base(app, opts) {
+  if (!utils.isObject(app) && typeof app !== 'function') {
+    throw new TypeError('use: expect `app` be an object or function');
+  }
+
+  opts = utils.isObject(opts) ? opts : {};
+  opts.prop = typeof opts.prop === 'string' ? opts.prop : 'fns';
+  opts.prop = opts.prop.length > 0 ? opts.prop : 'fns';
+
+  if (!utils.isArray(app[opts.prop])) {
+    utils.define(app, opts.prop, []);
   }
 
   /**
@@ -45,7 +52,7 @@ module.exports = function base(app) {
    * @api public
    */
 
-  define(app, 'use', use);
+  utils.define(app, 'use', use);
 
   /**
    * Run all plugins on `fns`. Any plugin that returns a function
@@ -61,10 +68,12 @@ module.exports = function base(app) {
    * @api public
    */
 
-  define(app, 'run', function (val) {
+  utils.define(app, 'run', function (val) {
+    var self = this || app;
+    var fns = self[opts.prop];
     decorate(val);
-    var len = this.fns.length, i = -1;
-    while (++i < len) val.use(this.fns[i]);
+    var len = fns.length, i = -1;
+    while (++i < len) val.use(fns[i]);
     return val;
   });
 
@@ -73,12 +82,22 @@ module.exports = function base(app) {
    * `fns` array to be called by the `run` method.
    */
 
-  function use(fn) {
-    var plugin = fn.call(this, this);
-    if (typeof plugin === 'function') {
-      this.fns.push(plugin);
+  function use(fn, options) {
+    if (typeof fn !== 'function') {
+      throw new TypeError('.use expect `fn` be function');
     }
-    return this;
+    var self = this || app;
+
+    if (typeof opts.fn === 'function') {
+      opts.fn.call(self, self, options);
+    }
+
+    var plugin = fn.call(self, self);
+    if (typeof plugin === 'function') {
+      var fns = self[opts.prop];
+      fns.push(plugin);
+    }
+    return self;
   }
 
   /**
@@ -86,7 +105,7 @@ module.exports = function base(app) {
    */
 
   function decorate(val) {
-    if (isObject(val) && (!val.use || !val.run)) {
+    if (utils.isObject(val) && (!val.use || !val.run)) {
       base(val);
     }
   }
