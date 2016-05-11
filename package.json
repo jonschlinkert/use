@@ -31,16 +31,35 @@
     "extend-shallow": "^2.0.1",
     "gulp": "^3.9.0",
     "gulp-eslint": "^1.1.0",
+    "gulp-format-md": "^0.1.9",
     "gulp-istanbul": "^0.10.2",
     "gulp-mocha": "^2.1.3",
-    "mocha": "*"
+    "mocha": "^2.4.5"
   },
+  "keywords": [
+    "use"
+  ],
   "verb": {
     "related": {
       "list": [
         "base-methods",
         "ware"
       ]
+    },
+    "reflinks": [
+      "ware",
+      "verb"
+    ],
+    "toc": false,
+    "layout": "default",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
+    "lint": {
+      "reflinks": true
     }
   }
 }
