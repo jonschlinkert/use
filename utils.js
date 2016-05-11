@@ -1,24 +1,8 @@
-'use strict'
-
-/**
- * Module dependencies
- */
+'use strict';
 
 var utils = require('lazy-cache')(require);
-
-/**
- * Temporarily re-assign `require` to trick browserify and
- * webpack into reconizing lazy dependencies.
- *
- * This tiny bit of ugliness has the huge dual advantage of
- * only loading modules that are actually called at some
- * point in the lifecycle of the application, whilst also
- * allowing browserify and webpack to find modules that
- * are depended on but never actually called.
- */
-
 var fn = require;
-require = utils; // eslint-disable-line no-undef, no-native-reassign
+require = utils; // eslint-disable-line
 
 /**
  * Lazily required module dependencies
@@ -27,12 +11,11 @@ require = utils; // eslint-disable-line no-undef, no-native-reassign
 require('define-property', 'define');
 require('isarray', 'isArray');
 require('isobject', 'isObject');
+require = fn; // eslint-disable-line
 
-/**
- * Restore `require`
- */
-
-require = fn; // eslint-disable-line no-undef, no-native-reassign
+utils.isString = function(val) {
+  return val && typeof val === 'string';
+};
 
 /**
  * Expose `utils` modules

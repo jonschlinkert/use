@@ -24,7 +24,7 @@ describe('use', function() {
       use({}).use(123);
     }
     assert.throws(fixture, TypeError);
-    assert.throws(fixture, /expect `fn` be function/);
+    assert.throws(fixture, /use expects `fn` be a function/);
   });
 
   it('should allow passing `opts.fn` to merge options from each plugin to app options', function() {
@@ -53,7 +53,7 @@ describe('use', function() {
       }, { ccc: 'ddd' });
   });
 
-  it('should not extend options if `opts.fn` not given (#3)', function () {
+  it('should not extend options if `opts.fn` not given (#3)', function() {
     var limon = {options: {
       foo: 'bar'
     }};
