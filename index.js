@@ -7,19 +7,20 @@
 
 'use strict';
 
-var utils = require('./utils')
+var utils = require('./utils');
 
 module.exports = function base(app, opts) {
   if (!utils.isObject(app) && typeof app !== 'function') {
     throw new TypeError('use: expect `app` be an object or function');
   }
 
-  opts = utils.isObject(opts) ? opts : {};
-  opts.prop = typeof opts.prop === 'string' ? opts.prop : 'fns';
-  opts.prop = opts.prop.length > 0 ? opts.prop : 'fns';
+  if (!utils.isObject(opts)) {
+    opts = {};
+  }
 
-  if (!utils.isArray(app[opts.prop])) {
-    utils.define(app, opts.prop, []);
+  var prop = utils.isString(opts.prop) ? opts.prop : 'fns';
+  if (!utils.isArray(app[prop])) {
+    utils.define(app, prop, []);
   }
 
   /**
@@ -68,12 +69,18 @@ module.exports = function base(app, opts) {
    * @api public
    */
 
-  utils.define(app, 'run', function (val) {
-    var self = this || app;
-    var fns = self[opts.prop];
+  utils.define(app, 'run', function(val) {
+    if (!utils.isObject(val)) return;
     decorate(val);
-    var len = fns.length, i = -1;
-    while (++i < len) val.use(fns[i]);
+
+    var self = this || app;
+    var fns = self[prop];
+    var len = fns.length;
+    var idx = -1;
+
+    while (++idx < len) {
+      val.use(fns[idx]);
+    }
     return val;
   });
 
@@ -84,17 +91,17 @@ module.exports = function base(app, opts) {
 
   function use(fn, options) {
     if (typeof fn !== 'function') {
-      throw new TypeError('.use expect `fn` be function');
+      throw new TypeError('.use expects `fn` be a function');
     }
-    var self = this || app;
 
+    var self = this || app;
     if (typeof opts.fn === 'function') {
       opts.fn.call(self, self, options);
     }
 
     var plugin = fn.call(self, self);
     if (typeof plugin === 'function') {
-      var fns = self[opts.prop];
+      var fns = self[prop];
       fns.push(plugin);
     }
     return self;
@@ -105,7 +112,7 @@ module.exports = function base(app, opts) {
    */
 
   function decorate(val) {
-    if (utils.isObject(val) && (!val.use || !val.run)) {
+    if (!val.use || !val.run) {
       base(val);
     }
   }
