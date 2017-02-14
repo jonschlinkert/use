@@ -9,7 +9,6 @@ require = utils; // eslint-disable-line
  */
 
 require('define-property', 'define');
-require('isarray', 'isArray');
 require('isobject', 'isObject');
 require = fn; // eslint-disable-line
 

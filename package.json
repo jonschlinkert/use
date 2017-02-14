@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "define-property": "^0.2.5",
-    "isarray": "^2.0.1",
     "isobject": "^3.0.0",
     "lazy-cache": "^2.0.2"
   },

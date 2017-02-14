@@ -19,7 +19,7 @@ module.exports = function base(app, opts) {
   }
 
   var prop = utils.isString(opts.prop) ? opts.prop : 'fns';
-  if (!utils.isArray(app[prop])) {
+  if (!Array.isArray(app[prop])) {
     utils.define(app, prop, []);
   }
 
