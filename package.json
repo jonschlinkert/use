@@ -4,6 +4,12 @@
   "version": "2.0.0",
   "homepage": "https://github.com/jonschlinkert/use",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+  "contributors": [
+    "<wtgtybhertgeghgtwtg@gmail.com> (https://github.com/wtgtybhertgeghgtwtg)",
+    "Brian Woodward <brian.woodward@gmail.com> (https://github.com/doowb)",
+    "Charlike Mike Reagent (https://i.am.charlike.online)",
+    "Jon Schlinkert <jon.schlinkert@sellside.com> (http://twitter.com/jonschlinkert)"
+  ],
   "repository": "jonschlinkert/use",
   "bugs": {
     "url": "https://github.com/jonschlinkert/use/issues"
@@ -47,8 +53,8 @@
       ]
     },
     "reflinks": [
-      "ware",
-      "verb"
+      "verb",
+      "ware"
     ],
     "toc": false,
     "layout": "default",

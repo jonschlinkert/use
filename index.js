@@ -1,8 +1,8 @@
 /*!
  * use <https://github.com/jonschlinkert/use>
  *
- * Copyright (c) 2015, Jon Schlinkert.
- * Licensed under the MIT License.
+ * Copyright (c) 2015, 2017, Jon Schlinkert.
+ * Released under the MIT License.
  */
 
 'use strict';
