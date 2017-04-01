@@ -16,7 +16,7 @@ describe('use', function() {
       use(123);
     }
     assert.throws(fixture, TypeError);
-    assert.throws(fixture, /expect `app` be an object or function/);
+    assert.throws(fixture, /expected an object or function/);
   });
 
   it('should throw TypeError if not a function passed to `.use` method', function() {
@@ -24,22 +24,22 @@ describe('use', function() {
       use({}).use(123);
     }
     assert.throws(fixture, TypeError);
-    assert.throws(fixture, /use expects `fn` be a function/);
+    assert.throws(fixture, /expected a function/);
   });
 
-  it('should allow passing `opts.fn` to merge options from each plugin to app options', function() {
-    var limon = {options: {
-      foo: 'bar'
-    }};
-    use(limon, {
-      fn: function(app, options) {
+  it('should allow passing `opts.hook` to merge options from each plugin to app options', function() {
+    var obj = {options: {foo: 'bar'}};
+    var count = 0;
+    use(obj, {
+      hook: function(app, options) {
         assert.strictEqual(this.options.foo, 'bar');
         this.options = extend(this.options, options);
         this.options.qux = 123;
+        count++;
       }
     });
 
-    limon
+    obj
       .use(function() {
         assert.strictEqual(this.options.foo, 'bar');
         assert.strictEqual(this.options.xxx, 'yyy');
@@ -51,15 +51,17 @@ describe('use', function() {
         assert.strictEqual(this.options.qux, 123);
         assert.strictEqual(this.options.ccc, 'ddd');
       }, { ccc: 'ddd' });
+
+     assert.equal(count, 2);
   });
 
   it('should not extend options if `opts.fn` not given (#3)', function() {
-    var limon = {options: {
+    var obj = {options: {
       foo: 'bar'
     }};
-    use(limon);
+    use(obj);
 
-    limon
+    obj
       .use(function() {
         assert.strictEqual(this.options.foo, 'bar');
         assert.strictEqual(this.options.xxx, undefined);
@@ -277,6 +279,6 @@ describe('run', function() {
     assert.deepEqual(foo,  { a: 'b', c: 'd', e: 'f' });
     assert.equal(typeof foo.use, 'function');
     assert.equal(typeof foo.run, 'function');
-    assert.equal(typeof foo.fns, 'undefined');
+    assert(Array.isArray(foo.fns));
   });
 });

@@ -28,8 +28,7 @@
   },
   "dependencies": {
     "define-property": "^0.2.5",
-    "isobject": "^3.0.0",
-    "lazy-cache": "^2.0.2"
+    "isobject": "^3.0.0"
   },
   "devDependencies": {
     "base-plugins": "^0.4.13",
