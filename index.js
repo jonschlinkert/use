@@ -95,8 +95,8 @@ module.exports = function base(app, opts) {
     }
 
     var self = this || app;
-    if (typeof opts.fn === 'function') {
-      opts.fn.call(self, self, options);
+    if (typeof opts.hook === 'function') {
+      opts.hook.call(self, self, options);
     }
 
     var plugin = fn.call(self, self);
