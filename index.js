@@ -96,8 +96,11 @@ module.exports = function base(app, options) {
    */
 
   function use(type, fn, options) {
+    var idx = 1;
+
     if (typeof type === 'string' || Array.isArray(type)) {
       fn = wrap(type, fn);
+      idx++;
     } else {
       options = fn;
       fn = type;
@@ -110,25 +113,18 @@ module.exports = function base(app, options) {
     var self = this || app;
     var fns = self[prop];
 
+    var args = [].slice.call(arguments, idx);
+    args.unshift(self);
+
     if (typeof opts.hook === 'function') {
-      opts.hook.call(self, self, options);
+      opts.hook.apply(self, args);
     }
 
-    var val = fn.call(self, self, options);
-    if (typeof val === 'function') {
+    var val = fn.apply(self, args);
+    if (typeof val === 'function' && fns.indexOf(val) === -1) {
       fns.push(val);
     }
     return self;
-  }
-
-  /**
-   * Ensure the `.use` method exists on `val`
-   */
-
-  function decorate(val) {
-    if (!val.use || !val.run) {
-      base(val);
-    }
   }
 
   /**
@@ -142,8 +138,7 @@ module.exports = function base(app, options) {
 
   function wrap(type, fn) {
     return function plugin() {
-      if (!isValid(this, type)) return plugin;
-      return fn.apply(this, arguments);
+      return this.type === type ? fn.apply(this, arguments) : plugin;
     };
   }
 

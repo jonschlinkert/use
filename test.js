@@ -107,8 +107,7 @@ describe('use', function() {
     use(app, { prop: 'plugins' });
     assert.strictEqual(Array.isArray(app.fns), false);
     assert.strictEqual(Array.isArray(app.plugins), true);
-    assert(app.plugins.length === 0);
-
+    assert.equal(app.plugins.length, 0);
   });
 
   it('should immediately invoke a plugin function', function() {
@@ -280,5 +279,43 @@ describe('run', function() {
     assert.equal(typeof foo.use, 'function');
     assert.equal(typeof foo.run, 'function');
     assert(Array.isArray(foo.fns));
+  });
+
+  describe('named plugins', function() {
+    it('should register named plugins', function() {
+      var app = {type: 'app'};
+      use(app);
+
+      var names = [];
+
+      app.use('foo', function() {
+        names.push(this.type);
+      });
+
+      app.use('bar', function() {
+        names.push(this.type);
+      });
+
+      app.use('baz', function() {
+        names.push(this.type);
+      });
+
+      var foo = {};
+      foo.type = 'foo';
+      foo.parent = app;
+      app.run(foo);
+
+      var bar = {};
+      bar.type = 'bar';
+      bar.parent = foo;
+      foo.run(bar);
+
+      var baz = {};
+      baz.type = 'baz';
+      baz.parent = bar;
+      bar.run(baz);
+
+      assert.deepEqual(names, ['foo', 'bar', 'baz']);
+    });
   });
 });
