@@ -7,15 +7,14 @@
 
 'use strict';
 
-var isObject = require('isobject');
-var define = require('define-property');
+var typeOf = require('kind-of');
 
 module.exports = function base(app, options) {
-  if (!isObject(app) && typeof app !== 'function') {
+  if (typeOf(app) !== 'object' && typeof app !== 'function') {
     throw new TypeError('expected an object or function');
   }
 
-  var opts = isObject(options) ? options : {};
+  var opts = typeOf(options) === 'object' ? options : {};
   var prop = typeof opts.prop === 'string' ? opts.prop : 'fns';
   if (!Array.isArray(app[prop])) {
     define(app, prop, []);
@@ -68,7 +67,7 @@ module.exports = function base(app, options) {
    */
 
   define(app, 'run', function(val) {
-    if (!isObject(val)) return;
+    if (typeOf(val) !== 'object') return;
 
     if (!val.use || !val.run) {
       define(val, prop, val[prop] || []);
@@ -96,11 +95,11 @@ module.exports = function base(app, options) {
    */
 
   function use(type, fn, options) {
-    var idx = 1;
+    var offset = 1;
 
     if (typeof type === 'string' || Array.isArray(type)) {
       fn = wrap(type, fn);
-      idx++;
+      offset++;
     } else {
       options = fn;
       fn = type;
@@ -113,7 +112,7 @@ module.exports = function base(app, options) {
     var self = this || app;
     var fns = self[prop];
 
-    var args = [].slice.call(arguments, idx);
+    var args = [].slice.call(arguments, offset);
     args.unshift(self);
 
     if (typeof opts.hook === 'function') {
@@ -144,3 +143,11 @@ module.exports = function base(app, options) {
 
   return app;
 };
+
+function define(obj, key, val) {
+  Object.defineProperty(obj, key, {
+    configurable: true,
+    writable: true,
+    value: val
+  });
+}

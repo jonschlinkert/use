@@ -5,10 +5,10 @@
   "homepage": "https://github.com/jonschlinkert/use",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "contributors": [
-    "<wtgtybhertgeghgtwtg@gmail.com> (https://github.com/wtgtybhertgeghgtwtg)",
-    "Brian Woodward <brian.woodward@gmail.com> (https://twitter.com/doowb)",
-    "Charlike Mike Reagent (https://i.am.charlike.online)",
-    "Jon Schlinkert <jon.schlinkert@sellside.com> (http://twitter.com/jonschlinkert)"
+    "Brian Woodward (https://twitter.com/doowb)",
+    "Jon Schlinkert (http://twitter.com/jonschlinkert)",
+    "Olsten Larck (https://i.am.charlike.online)",
+    "(https://github.com/wtgtybhertgeghgtwtg)"
   ],
   "repository": "jonschlinkert/use",
   "bugs": {
@@ -26,18 +26,18 @@
     "test": "mocha"
   },
   "dependencies": {
-    "define-property": "^0.2.5",
-    "isobject": "^3.0.0"
+    "kind-of": "^6.0.2"
   },
   "devDependencies": {
     "base-plugins": "^1.0.0",
-    "extend-shallow": "^2.0.1",
+    "define-property": "^2.0.0",
+    "extend-shallow": "^3.0.1",
     "gulp": "^3.9.1",
-    "gulp-eslint": "^3.0.1",
-    "gulp-format-md": "^0.1.12",
-    "gulp-istanbul": "^1.1.1",
-    "gulp-mocha": "^3.0.0",
-    "mocha": "^3.2.0"
+    "gulp-eslint": "^4.0.0",
+    "gulp-format-md": "^1.0.0",
+    "gulp-istanbul": "^1.1.2",
+    "gulp-mocha": "^3.0.1",
+    "mocha": "^4.0.1"
   },
   "keywords": [
     "use"
