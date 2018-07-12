@@ -25,9 +25,6 @@
   "scripts": {
     "test": "mocha"
   },
-  "dependencies": {
-    "kind-of": "^6.0.2"
-  },
   "devDependencies": {
     "base-plugins": "^1.0.0",
     "define-property": "^2.0.0",
@@ -43,6 +40,14 @@
     "use"
   ],
   "verb": {
+    "toc": false,
+    "layout": "default",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
     "related": {
       "list": [
         "base",
@@ -53,14 +58,6 @@
     "reflinks": [
       "verb",
       "ware"
-    ],
-    "toc": false,
-    "layout": "default",
-    "tasks": [
-      "readme"
-    ],
-    "plugins": [
-      "gulp-format-md"
     ],
     "lint": {
       "reflinks": true
